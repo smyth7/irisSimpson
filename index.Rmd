@@ -24,9 +24,12 @@ Recall the iris dataset:
 head(iris)
 ```
 
+Let's look at a pairs plot: 
+
 ```{r}
 iris %>% select(-Species) %>% ggpairs()
 ```
+
 So a pairs plot show multiple  negative correlations, but the plots hint at subpopulations. 
 
 ```{r}
@@ -38,6 +41,7 @@ So indeed we see that the species factor explains this. Focus on the strongest n
 ```{r}
 iris %>% select(Petal.Length,Sepal.Width,Species) %>%  ggpairs(columns = 1:2,ggplot2::aes(colour=Species))
 ```
+
 
 Here we see that the overall the overall negative correlation is actually an expample of Simpson's paradox (quoting [Wikipedia](https://en.wikipedia.org/wiki/Simpson%27s_paradox)): "a trend appears in several different groups of data but disappears or reverses when these groups are combined." In this case, the true trends are hidden by the combination of the three species into one group. 
 

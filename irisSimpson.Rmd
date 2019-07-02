@@ -1,0 +1,43 @@
+---
+title: "Simpson's paradox in the Iris dataset"
+author: "Paul Smyth"
+date: "02/07/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(GGally)
+```
+
+# Introduction
+
+The [Datacamp podcast 42](https://www.datacamp.com/community/podcast/full-stack-data-science) mentioned that Simpson's paradox is obvious in the Iris dataset. Let's try to reproduce this.
+
+# Plots 
+
+Recall the iris dataset:
+
+```{r}
+head(iris)
+```
+
+```{r}
+iris %>% select(-Species) %>% ggpairs()
+```
+So a pairs plot show multiple  negative correlations, but the plots hint at subpopulations. 
+
+```{r}
+iris %>% ggpairs(columns = 1:4,ggplot2::aes(colour=Species))
+```
+
+So indeed we see that the species factor explains this. Focus on the strongest negative correlation:
+
+```{r}
+iris %>% select(Petal.Length,Sepal.Width,Species) %>%  ggpairs(columns = 1:2,ggplot2::aes(colour=Species))
+```
+
+Here we see that the overall the overall negative correlation is actually an expample of Simpson's paradox (quoting [Wikipedia](https://en.wikipedia.org/wiki/Simpson%27s_paradox)): "a trend appears in several different groups of data but disappears or reverses when these groups are combined." In this case, the true trends are hidden by the combination of the three species into one group. 
+
